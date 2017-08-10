@@ -8,6 +8,7 @@ import (
 	"github.com/opendream/deeperror"
 	"strconv"
 	"github.com/gin-gonic/gin"
+	jwtgo "gopkg.in/dgrijalva/jwt-go.v3"
 )
 
 func Getenv(key, fallback string) string {
@@ -52,7 +53,7 @@ func TzToSeconds(tz string) (seconds int) {
 	return
 }
 
-func getMemberIdFromJwtPayload(c *gin.Context) (string, error) {
+func GetMemberIdFromJwtPayload(c *gin.Context) (string, error) {
 	// assign member_id
 	if jwtPayload, found := c.Get("JWT_PAYLOAD"); found {
 		claims := jwtPayload.(jwtgo.MapClaims)
@@ -61,8 +62,5 @@ func getMemberIdFromJwtPayload(c *gin.Context) (string, error) {
 	}
 
 	err := fmt.Errorf("Cannot load JWT")
-	util.Elog(50251004, "Error in getMemberIdFromJwtPayload", err,
-		domain, "noop", "noop", "noop") // TODO: receive unknown
-
 	return "", err
 }
