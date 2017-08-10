@@ -6,6 +6,7 @@ import (
 	"log"
 	"strings"
 	"github.com/opendream/deeperror"
+	"strconv"
 )
 
 func Getenv(key, fallback string) string {
@@ -32,4 +33,20 @@ func Plog(msg string, domain string, oid string, mid string, email string) {
 	fmt.Println(fmt.Sprintf("Message: %v \r [domain: %v][oid: %v][mid: %v][email: %v]",
 		msg, domain, oid, mid, email,
 	))
+}
+
+func TzToSeconds(tz string) (seconds int) {
+	if len(tz) != 5 {
+		return
+	}
+	number, err := strconv.Atoi(tz[1:5])
+	if err != nil {
+		return
+	}
+
+	seconds = int((float64(number)/100) * 3600)
+	if tz[0:1] == "-" {
+		seconds = -seconds
+	}
+	return
 }
