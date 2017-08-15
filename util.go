@@ -101,12 +101,14 @@ func Getenv(key, fallback string) string {
 
 func Elog(num int64, msg string, err error, domain string, oid string, mid string, email string) {
 	debug := Getenv("DEBUG", "false") == "true"
-	if debug {
+
+	msg = deeperror.New(num, msg, err).Error()
+	if !debug {
 		msg = strings.Replace(msg, "\n", "\r", -1)
 	}
-	derr := deeperror.New(num, msg, err)
-	log.Print(fmt.Sprintf("%v \r [domain: %v][oid: %v][mid: %v][email: %v]",
-		derr, domain, oid, mid, email,
+
+	log.Println(fmt.Sprintf("%v \r [domain: %v][oid: %v][mid: %v][email: %v]",
+		msg, domain, oid, mid, email,
 	))
 }
 
