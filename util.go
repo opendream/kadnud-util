@@ -105,18 +105,29 @@ func Elog(num int64, msg string, err error, domain string, oid string, mid strin
 	msg = deeperror.New(num, msg, err).Error()
 	if !debug {
 		msg = strings.Replace(msg, "\n", "\r", -1)
+		log.Println(fmt.Sprintf("%v \r [domain: %v][oid: %v][mid: %v][email: %v]",
+			msg, domain, oid, mid, email,
+		))
+	} else {
+		log.Println(fmt.Sprintf("%v \n [domain: %v][oid: %v][mid: %v][email: %v]",
+			msg, domain, oid, mid, email,
+		))
 	}
-
-	log.Println(fmt.Sprintf("%v \r [domain: %v][oid: %v][mid: %v][email: %v]",
-		msg, domain, oid, mid, email,
-	))
 }
 
 func Plog(msg string, domain string, oid string, mid string, email string) {
-	msg = strings.Replace(msg, "\n", "\r", -1)
-	fmt.Println(fmt.Sprintf("Message: %v \r [domain: %v][oid: %v][mid: %v][email: %v]",
-		msg, domain, oid, mid, email,
-	))
+	debug := Getenv("DEBUG", "false") == "true"
+
+	if !debug {
+		msg = strings.Replace(msg, "\n", "\r", -1)
+		fmt.Println(fmt.Sprintf("Message: %v \r [domain: %v][oid: %v][mid: %v][email: %v]",
+			msg, domain, oid, mid, email,
+		))
+	} else {
+		fmt.Println(fmt.Sprintf("Message: %v \n [domain: %v][oid: %v][mid: %v][email: %v]",
+			msg, domain, oid, mid, email,
+		))
+	}
 }
 
 func TzToSeconds(tz string) (seconds int) {
