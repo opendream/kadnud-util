@@ -99,6 +99,14 @@ func Getenv(key, fallback string) string {
 	return value
 }
 
+func GetenvByDomain(key, domain, fallback string) string {
+	value := os.Getenv(fmt.Sprintf("%v__%v", key, domain))
+	if len(value) == 0 {
+		return fallback
+	}
+	return value
+}
+
 func Elog(num int64, msg string, err error, domain string, oid string, mid string, email string) {
 	debug := Getenv("DEBUG", "false") == "true"
 
