@@ -166,6 +166,18 @@ func GetMemberIdFromJwtPayload(c *gin.Context) (string, error) {
 	return "", err
 }
 
+func GetDomainFromJwtPayload(c *gin.Context) (string, error) {
+	// assign member_id
+	if jwtPayload, found := c.Get("JWT_PAYLOAD"); found {
+		claims := jwtPayload.(jwtgo.MapClaims)
+
+		return claims["domain"].(string), nil
+	}
+
+	err := fmt.Errorf("Cannot load JWT")
+	return "", err
+}
+
 func GetProvinceName(code string) string {
 	return Provinces[code]
 }
