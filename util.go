@@ -154,6 +154,16 @@ func TzToSeconds(tz string) (seconds int) {
 	return
 }
 
+func GetJwtPayload(c *gin.Context) (jwtgo.MapClaims, error) {
+	if jwtPayload, found := c.Get("JWT_PAYLOAD"); found {
+		claims := jwtPayload.(jwtgo.MapClaims)
+		return claims, nil
+	}
+
+	err := fmt.Errorf("Cannot load JWT")
+	return nil, err
+}
+
 func GetMemberIdFromJwtPayload(c *gin.Context) (string, error) {
 	// assign member_id
 	if jwtPayload, found := c.Get("JWT_PAYLOAD"); found {
